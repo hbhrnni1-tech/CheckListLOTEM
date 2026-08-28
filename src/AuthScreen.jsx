@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Sparkles, Loader2, AlertCircle, Mail, Lock, CheckCircle2, ArrowRight } from "lucide-react";
+import { Sparkles, Loader2, AlertCircle, Mail, Lock, CheckCircle2, ArrowRight, Eye, EyeOff } from "lucide-react";
 import { signIn, signUp, resetPasswordForEmail } from "./lib/auth";
 
 export default function AuthScreen() {
@@ -10,6 +10,7 @@ export default function AuthScreen() {
   const [error, setError] = useState(null);
   const [signupDone, setSignupDone] = useState(false);
   const [resetSent, setResetSent] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   function translateAuthError(msg) {
     if (!msg) return "אירעה שגיאה, נסו שוב";
@@ -209,13 +210,21 @@ export default function AuthScreen() {
                 <div className="relative">
                   <Lock size={15} className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400" />
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
                     autoComplete={mode === "login" ? "current-password" : "new-password"}
-                    className="w-full rounded-lg border border-neutral-300 py-2 pl-3 pr-9 text-sm text-neutral-900 placeholder-neutral-400 outline-none focus:border-pink-600 focus:ring-2 focus:ring-pink-100"
+                    className="w-full rounded-lg border border-neutral-300 py-2 pl-9 pr-9 text-sm text-neutral-900 placeholder-neutral-400 outline-none focus:border-pink-600 focus:ring-2 focus:ring-pink-100"
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((v) => !v)}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-600"
+                    title={showPassword ? "הסתרת סיסמה" : "הצגת סיסמה"}
+                  >
+                    {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
+                  </button>
                 </div>
                 {mode === "signup" && <p className="mt-1 text-xs text-neutral-400">לפחות 6 תווים</p>}
               </div>
